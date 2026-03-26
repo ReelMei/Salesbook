@@ -7,39 +7,18 @@ const KEYS = {
 
 // ── Seed data (only written once) ───────────────────────────
 const SEED_PRODUCTS = [
-  { id: "p1", name: "Swarovski Crystal Beads (6mm)", sku: "SCB-006", brandId: "b1", category: "Beads", costPrice: 1.2, salePrice: 2.5, stock: 120, lowStockThreshold: 20 },
-  { id: "p2", name: "Acrylic Beads (10mm)", sku: "AB-010", brandId: "b2", category: "Beads", costPrice: 0.3, salePrice: 0.6, stock: 30, lowStockThreshold: 50 },
-  { id: "p3", name: "Plastic Crochet Hook Set", sku: "PCH-SET", brandId: "b3", category: "Crochet Hooks", costPrice: 5, salePrice: 12, stock: 0, lowStockThreshold: 5 },
-  { id: "p4", name: "Elastic Cord (1mm)", sku: "EC-001", brandId: "b2", category: "Threads & Strings", costPrice: 2, salePrice: 4.5, stock: 8, lowStockThreshold: 15 },
-  { id: "p5", name: "Crochet Tote Bag", sku: "CTB-001", brandId: "b3", category: "Finished Crochet", costPrice: 8, salePrice: 22, stock: 3, lowStockThreshold: 5 },
-  { id: "p6", name: "Cotton Yarn (100g)", sku: "CY-100", brandId: "b4", category: "Yarn", costPrice: 3, salePrice: 7.99, stock: 55, lowStockThreshold: 10 },
-  { id: "p7", name: "Seed Beads Mix", sku: "SBM-001", brandId: "b1", category: "Beads", costPrice: 1.5, salePrice: 3.5, stock: 200, lowStockThreshold: 30 },
-  { id: "p8", name: "Steel Crochet Hook 1.5mm", sku: "SCH-015", brandId: "b3", category: "Crochet Hooks", costPrice: 2, salePrice: 5.5, stock: 18, lowStockThreshold: 5 },
-  { id: "p9", name: "Beaded Bracelet - Ocean", sku: "BBO-001", brandId: "b1", category: "Finished Jewellery", costPrice: 5, salePrice: 24.99, stock: 12, lowStockThreshold: 3 },
-  { id: "p10", name: "Nylon Thread 0.5mm", sku: "NT-005", brandId: "b2", category: "Threads & Strings", costPrice: 1.8, salePrice: 3.99, stock: 40, lowStockThreshold: 10 },
 ];
 
 const SEED_BRANDS = [
-  { id: "b1", name: "Swarovski", country: "Austria", contact: "info@swarovski.com", notes: "Premium crystal supplier" },
-  { id: "b2", name: "ArtCord", country: "China", contact: "sales@artcord.cn", notes: "Affordable threads & beads" },
-  { id: "b3", name: "Clover", country: "Japan", contact: "support@clover.jp", notes: "Quality crochet tools" },
-  { id: "b4", name: "Paintbox Yarns", country: "UK", contact: "hello@paintbox.com", notes: "Vibrant cotton yarn range" },
+  
 ];
 
 const SEED_SALES = [
-  { id: "s1", productId: "p1", productName: "Swarovski Crystal Beads (6mm)", qty: 50, salePrice: 2.5, costPrice: 1.2, date: "2026-03-24" },
-  { id: "s2", productId: "p9", productName: "Beaded Bracelet - Ocean", qty: 3, salePrice: 24.99, costPrice: 5, date: "2026-03-23" },
-  { id: "s3", productId: "p6", productName: "Cotton Yarn (100g)", qty: 10, salePrice: 7.99, costPrice: 3, date: "2026-03-22" },
-  { id: "s4", productId: "p7", productName: "Seed Beads Mix", qty: 20, salePrice: 3.5, costPrice: 1.5, date: "2026-03-20" },
-  { id: "s5", productId: "p2", productName: "Acrylic Beads (10mm)", qty: 100, salePrice: 0.6, costPrice: 0.3, date: "2026-03-18" },
+ 
 ];
 
 const SEED_EXPENSES = [
-  { id: "e1", description: "Bead restock from supplier", amount: 15000, category: "Supplies & Materials", date: "2026-03-20", notes: "Swarovski & acrylic beads bulk order" },
-  { id: "e2", description: "DHL shipping to customer",   amount: 3500,  category: "Shipping & Delivery",  date: "2026-03-22", notes: "" },
-  { id: "e3", description: "Workshop rent - March",      amount: 25000, category: "Operations & Rent",    date: "2026-03-01", notes: "Monthly studio rent" },
-  { id: "e4", description: "Crochet hooks bulk buy",     amount: 8000,  category: "Supplies & Materials", date: "2026-03-15", notes: "" },
-  { id: "e5", description: "Packaging materials",        amount: 4200,  category: "Shipping & Delivery",  date: "2026-03-18", notes: "Boxes, tissue, ribbon" },
+  
 ];
 
 function seed() {
