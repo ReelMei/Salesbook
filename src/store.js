@@ -1,7 +1,8 @@
 const KEYS = {
   products: "bc_products",
-  brands: "bc_brands",
-  sales: "bc_sales",
+  brands:   "bc_brands",
+  sales:    "bc_sales",
+  expenses: "bc_expenses",
 };
 
 // ── Seed data (only written once) ───────────────────────────
@@ -33,10 +34,19 @@ const SEED_SALES = [
   { id: "s5", productId: "p2", productName: "Acrylic Beads (10mm)", qty: 100, salePrice: 0.6, costPrice: 0.3, date: "2026-03-18" },
 ];
 
+const SEED_EXPENSES = [
+  { id: "e1", description: "Bead restock from supplier", amount: 15000, category: "Supplies & Materials", date: "2026-03-20", notes: "Swarovski & acrylic beads bulk order" },
+  { id: "e2", description: "DHL shipping to customer",   amount: 3500,  category: "Shipping & Delivery",  date: "2026-03-22", notes: "" },
+  { id: "e3", description: "Workshop rent - March",      amount: 25000, category: "Operations & Rent",    date: "2026-03-01", notes: "Monthly studio rent" },
+  { id: "e4", description: "Crochet hooks bulk buy",     amount: 8000,  category: "Supplies & Materials", date: "2026-03-15", notes: "" },
+  { id: "e5", description: "Packaging materials",        amount: 4200,  category: "Shipping & Delivery",  date: "2026-03-18", notes: "Boxes, tissue, ribbon" },
+];
+
 function seed() {
   if (!localStorage.getItem(KEYS.products)) localStorage.setItem(KEYS.products, JSON.stringify(SEED_PRODUCTS));
   if (!localStorage.getItem(KEYS.brands))   localStorage.setItem(KEYS.brands,   JSON.stringify(SEED_BRANDS));
   if (!localStorage.getItem(KEYS.sales))    localStorage.setItem(KEYS.sales,    JSON.stringify(SEED_SALES));
+  if (!localStorage.getItem(KEYS.expenses)) localStorage.setItem(KEYS.expenses, JSON.stringify(SEED_EXPENSES));
 }
 
 // ── Generic helpers ──────────────────────────────────────────
@@ -69,21 +79,49 @@ export function recordSale(s)          {
   return item;
 }
 
+// ── Expenses ──────────────────────────────────────────────────
+export function getExpenses()          { return getAll(KEYS.expenses); }
+export function addExpense(e)          { const all = getExpenses(); const item = { ...e, id: uid() }; saveAll(KEYS.expenses, [item, ...all]); return item; }
+export function deleteExpense(id)      { saveAll(KEYS.expenses, getExpenses().filter(x => x.id !== id)); }
+
 // ── Dashboard stats ───────────────────────────────────────────
 export function getDashboardStats() {
   const products = getProducts();
   const sales    = getSales();
-  const totalProducts    = products.length;
-  const outOfStock       = products.filter(p => p.stock === 0).length;
-  const lowStock         = products.filter(p => p.stock > 0 && p.stock <= p.lowStockThreshold).length;
-  const inventoryValue   = products.reduce((sum, p) => sum + p.costPrice * p.stock, 0);
-  const stockAlerts      = products.filter(p => p.stock <= p.lowStockThreshold).sort((a, b) => a.stock - b.stock);
-  const recentSales      = sales.slice(0, 5).map(s => ({
+  const expenses = getExpenses();
+
+  const totalProducts  = products.length;
+  const outOfStock     = products.filter(p => p.stock === 0).length;
+  const lowStock       = products.filter(p => p.stock > 0 && p.stock <= p.lowStockThreshold).length;
+  const inventoryValue = products.reduce((sum, p) => sum + p.costPrice * p.stock, 0);
+  const stockAlerts    = products.filter(p => p.stock <= p.lowStockThreshold).sort((a, b) => a.stock - b.stock);
+  const recentSales    = sales.slice(0, 5).map(s => ({
     ...s,
     revenue: s.qty * s.salePrice,
     profit:  s.qty * (s.salePrice - s.costPrice),
   }));
-  return { totalProducts, outOfStock, lowStock, inventoryValue, stockAlerts, recentSales };
+
+  // Financial summary
+  const totalRevenue  = sales.reduce((sum, s) => sum + s.qty * s.salePrice, 0);
+  const totalExpenses = expenses.reduce((sum, e) => sum + e.amount, 0);
+  const netProfit     = totalRevenue - totalExpenses;
+
+  // Breakdown by expense category
+  const CATEGORIES = ["Supplies & Materials", "Shipping & Delivery", "Operations & Rent", "Other"];
+  const expenseByCategory = CATEGORIES.map(cat => ({
+    category: cat,
+    amount: expenses.filter(e => e.category === cat).reduce((sum, e) => sum + e.amount, 0),
+  })).filter(c => c.amount > 0);
+
+  // Revenue by month (last 6 months)
+  const recentExpenses = expenses.slice(0, 5);
+
+  return {
+    totalProducts, outOfStock, lowStock, inventoryValue,
+    stockAlerts, recentSales,
+    totalRevenue, totalExpenses, netProfit,
+    expenseByCategory, recentExpenses,
+  };
 }
 
 seed();

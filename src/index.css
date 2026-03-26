@@ -1,10 +1,4 @@
 @import "tailwindcss";
-
-
-/* ============================================================
-   app.css  –  Global styles for Bead & Crochet Inventory
-   ============================================================ */
-
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
 
 :root {
@@ -273,6 +267,7 @@ tbody tr:hover td { background: #fafaf8; }
   border: none; background: transparent;
   font-family: inherit; font-size: 13px; font-weight: 500;
   cursor: pointer; color: var(--muted);
+  display: flex; align-items: center; gap: 6px;
 }
 .tab.active { background: var(--surface); color: var(--text); box-shadow: var(--card-shadow); }
 

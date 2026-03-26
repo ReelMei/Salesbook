@@ -3,14 +3,16 @@ import Dashboard from "./pages/Dashboard";
 import AddItems  from "./pages/AddItems";
 import Brand     from "./pages/Brand";
 import Sales     from "./pages/Sales";
+import Expenses  from "./pages/Expenses";
+import { Home, Plus, House, BadgeCent, BanknoteArrowDown } from "lucide-react";
 import "./index.css";
-import { Home, Plus, Store, GitGraph } from "lucide-react";
 
 const NAV = [
   { id: "home",      label: "Home",      icon: <Home /> },
   { id: "add-items", label: "Add Items", icon: <Plus /> },
-  { id: "brand",     label: "Brand",     icon: <Store /> },
-  { id: "sales",     label: "Sales",     icon: <GitGraph /> },
+  { id: "brand",     label: "Brand",     icon: <House /> },
+  { id: "sales",     label: "Sales",     icon: <BadgeCent /> },
+  { id: "expenses",  label: "Expenses",  icon: <BanknoteArrowDown /> },
 ];
 
 export default function App() {
@@ -32,7 +34,7 @@ export default function App() {
         <div className="sidebar-brand">
           <span className="sidebar-avatar">B</span>
           <div>
-            <div className="sidebar-title">Berry's Salesbook</div>
+            <div className="sidebar-title">Bead &amp; Crochet</div>
             <div className="sidebar-sub">Inventory Manager</div>
           </div>
         </div>
@@ -57,6 +59,7 @@ export default function App() {
         {page === "add-items" && <AddItems   onNavigate={navigate} />}
         {page === "brand"     && <Brand      onNavigate={navigate} />}
         {page === "sales"     && <Sales      onNavigate={navigate} />}
+        {page === "expenses"  && <Expenses   onNavigate={navigate} />}
       </main>
     </div>
   );
