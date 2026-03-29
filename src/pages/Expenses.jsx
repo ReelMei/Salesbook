@@ -53,27 +53,26 @@ export default function Expenses() {
   const totalFiltered = filtered.reduce((s, e) => s + e.amount, 0);
   const totalAll      = expenses.reduce((s, e) => s + e.amount, 0);
 
-  // Category totals for summary row
   const categoryTotals = CATEGORIES.map(cat => ({
     cat,
     total: expenses.filter(e => e.category === cat).reduce((s, e) => s + e.amount, 0),
   }));
 
   return (
-    <div>
+    <div className="px-3 sm:px-0">
       <div className="page-header">
         <h1>Expenses</h1>
         <p>Track your business costs and outgoings</p>
       </div>
 
-      {/* Summary cards */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 14, marginBottom: 24 }}>
-        <div className="stat-card danger" style={{ gridColumn: "1 / 2" }}>
+      {/* Summary cards — 2-col on mobile, 4-col on desktop */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-6">
+        <div className="stat-card danger">
           <div>
             <div className="stat-label">Total Expenses</div>
             <div className="stat-value" style={{ fontSize: 18 }}>{fmt(totalAll)}</div>
           </div>
-          <div className="stat-icon"><TrendingDown size={20} className="text-red-800"/></div>
+          <div className="stat-icon"><TrendingDown size={20} className="text-red-800" /></div>
         </div>
         {categoryTotals.filter(c => c.total > 0).slice(0, 3).map(c => {
           const colors = CATEGORY_COLORS[c.cat];
@@ -93,7 +92,9 @@ export default function Expenses() {
       <div style={{ background: "#eeede8", borderRadius: 10, padding: 4, display: "inline-flex", marginBottom: 22, gap: 4 }}>
         {["list", "add"].map(t => (
           <button key={t} className={`tab ${tab === t ? "active" : ""}`} onClick={() => setTab(t)}>
-           {t === "list" ? <><Notebook size={16} className="text-blue-700"/> All Expenses</> : <><Plus size={16} className="text-green-800"/> Add Expense</>}
+            {t === "list"
+              ? <><Notebook size={16} className="text-blue-700" /> All Expenses</>
+              : <><Plus size={16} className="text-green-800" /> Add Expense</>}
           </button>
         ))}
       </div>
@@ -101,24 +102,27 @@ export default function Expenses() {
       {/* Expense list */}
       {tab === "list" && (
         <div>
-          {/* Filter by category */}
-          <div style={{ display: "flex", gap: 8, marginBottom: 16, flexWrap: "wrap" }}>
+          {/* Filter pills — scroll horizontally on mobile */}
+          <div className="flex gap-2 mb-4 overflow-x-auto pb-1" style={{ flexWrap: "nowrap" }}>
             {["All", ...CATEGORIES].map(cat => (
               <button
                 key={cat}
                 onClick={() => setFilter(cat)}
+                className="shrink-0"
                 style={{
                   padding: "5px 14px", borderRadius: 20, border: "1px solid var(--border)",
                   fontSize: 12, fontWeight: 500, cursor: "pointer", fontFamily: "inherit",
                   background: filter === cat ? "var(--text)" : "var(--surface)",
                   color:      filter === cat ? "#fff" : "var(--text)",
-                  transition: "all .15s"
+                  transition: "all .15s",
+                  whiteSpace: "nowrap",
                 }}
               >{cat}</button>
             ))}
           </div>
 
-          <div className="card" style={{ padding: 0 }}>
+          {/* Desktop table */}
+          <div className="card hidden sm:block" style={{ padding: 0 }}>
             <div className="table-wrap">
               <table>
                 <thead>
@@ -173,12 +177,56 @@ export default function Expenses() {
               </table>
             </div>
           </div>
+
+          {/* Mobile card list */}
+          <div className="flex flex-col gap-3 sm:hidden">
+            {filtered.length === 0 && (
+              <div className="card" style={{ textAlign: "center", padding: 40, color: "var(--muted)" }}>No expenses found</div>
+            )}
+            {filtered.map(e => {
+              const colors = CATEGORY_COLORS[e.category] || CATEGORY_COLORS["Other"];
+              return (
+                <div className="card" key={e.id} style={{ padding: "14px 16px" }}>
+                  {/* Top row: description + amount */}
+                  <div className="flex items-start justify-between gap-2 mb-2">
+                    <div style={{ fontWeight: 600, fontSize: 14 }}>{e.description}</div>
+                    <div style={{ fontWeight: 700, color: "var(--danger)", fontSize: 14, shrink: 0 }} className="shrink-0">
+                      {fmt(e.amount)}
+                    </div>
+                  </div>
+                  {/* Meta row: category pill + date */}
+                  <div className="flex items-center gap-2 mb-3">
+                    <span style={{
+                      background: colors.bg, color: colors.color,
+                      padding: "2px 9px", borderRadius: 20, fontSize: 11, fontWeight: 600
+                    }}>{e.category}</span>
+                    <span className="mono text-muted" style={{ fontSize: 11 }}>{e.date}</span>
+                  </div>
+                  {/* Notes */}
+                  {e.notes && (
+                    <div className="text-muted mb-3" style={{ fontSize: 12 }}>{e.notes}</div>
+                  )}
+                  {/* Delete button */}
+                  <button className="btn btn-danger w-full justify-center" style={{ padding: "6px 12px" }} onClick={() => onDelete(e.id)}>
+                    Delete
+                  </button>
+                </div>
+              );
+            })}
+            {/* Mobile total */}
+            {filtered.length > 0 && (
+              <div className="flex justify-between items-center px-3 py-3 pb-2 bg-white" style={{ fontSize: 13, fontWeight: 700 }}>
+                <span>{filter === "All" ? "Total" : `${filter} Total`}</span>
+                <span style={{ color: "var(--danger)" }}>{fmt(totalFiltered)}</span>
+              </div>
+            )}
+          </div>
         </div>
       )}
 
       {/* Add expense form */}
       {tab === "add" && (
-        <div className="card" >
+        <div className="card">
           <div className="card-title">Add New Expense</div>
           <div className="form-grid">
             <div className="form-group full">
@@ -208,9 +256,9 @@ export default function Expenses() {
 
           {error && <p style={{ color: "var(--danger)", fontSize: 12, marginTop: 12 }}>{error}</p>}
 
-          <div className="btn-row">
-            <button className="btn btn-primary" onClick={onSubmit}>Add Expense</button>
-            <button className="btn btn-outline" onClick={() => { setForm(EMPTY); setError(""); }}>Clear</button>
+          <div className="btn-row flex-wrap gap-2">
+            <button className="btn btn-primary flex-1" onClick={onSubmit}>Add Expense</button>
+            <button className="btn btn-outline flex-1" onClick={() => { setForm(EMPTY); setError(""); }}>Clear</button>
           </div>
         </div>
       )}
