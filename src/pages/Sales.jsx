@@ -37,14 +37,14 @@ export default function Sales() {
   const totalUnits   = sales.reduce((s, x) => s + x.qty, 0);
 
   return (
-    <div>
+    <div className="px-3 sm:px-0">
       <div className="page-header">
         <h1>Sales</h1>
         <p>Record and track your sales</p>
       </div>
 
       {/* ── Summary cards ── */}
-      <div className="stat-grid" style={{ gridTemplateColumns: "repeat(3, 1fr)", marginBottom: 24 }}>
+      <div className="stat-grid mb-6">
         <div className="stat-card green">
           <div>
             <div className="stat-label">Total Revenue</div>
@@ -79,46 +79,88 @@ export default function Sales() {
 
       {/* ── Sales History ── */}
       {tab === "history" && (
-        <div className="card" style={{ padding: 0 }}>
-          <div className="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>Product</th>
-                  <th>Qty</th>
-                  <th>Sale Price</th>
-                  <th>Revenue</th>
-                  <th>Profit</th>
-                </tr>
-              </thead>
-              <tbody>
-                {sales.length === 0 && (
-                  <tr><td colSpan={6} style={{ textAlign: "center", padding: 40, color: "var(--muted)" }}>No sales recorded yet</td></tr>
-                )}
-                {sales.map(s => {
-                  const revenue = s.qty * s.salePrice;
-                  const profit  = s.qty * (s.salePrice - s.costPrice);
-                  return (
-                    <tr key={s.id}>
-                      <td className="text-muted mono">{s.date}</td>
-                      <td style={{ fontWeight: 500 }}>{s.productName}</td>
-                      <td>{s.qty}</td>
-                      <td>{fmt(s.salePrice)}</td>
-                      <td style={{ fontWeight: 500 }}>{fmt(revenue)}</td>
-                      <td className="text-accent" style={{ fontWeight: 500 }}>+{fmt(profit)}</td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+        <>
+          {/* Desktop table */}
+          <div className="card hidden sm:block" style={{ padding: 0 }}>
+            <div className="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Product</th>
+                    <th>Qty</th>
+                    <th>Sale Price</th>
+                    <th>Revenue</th>
+                    <th>Profit</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {sales.length === 0 && (
+                    <tr><td colSpan={6} style={{ textAlign: "center", padding: 40, color: "var(--muted)" }}>No sales recorded yet</td></tr>
+                  )}
+                  {sales.map(s => {
+                    const revenue = s.qty * s.salePrice;
+                    const profit  = s.qty * (s.salePrice - s.costPrice);
+                    return (
+                      <tr key={s.id}>
+                        <td className="text-muted mono">{s.date}</td>
+                        <td style={{ fontWeight: 500 }}>{s.productName}</td>
+                        <td>{s.qty}</td>
+                        <td>{fmt(s.salePrice)}</td>
+                        <td style={{ fontWeight: 500 }}>{fmt(revenue)}</td>
+                        <td className="text-accent" style={{ fontWeight: 500 }}>+{fmt(profit)}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div>
+
+          {/* Mobile card list */}
+          <div className="flex flex-col gap-3 sm:hidden">
+            {sales.length === 0 && (
+              <div className="card" style={{ textAlign: "center", padding: 40, color: "var(--muted)" }}>No sales recorded yet</div>
+            )}
+            {sales.map(s => {
+              const revenue = s.qty * s.salePrice;
+              const profit  = s.qty * (s.salePrice - s.costPrice);
+              return (
+                <div className="card" key={s.id} style={{ padding: "14px 16px" }}>
+                  {/* Product + date */}
+                  <div className="flex items-start justify-between gap-2 mb-2">
+                    <div style={{ fontWeight: 600, fontSize: 14 }}>{s.productName}</div>
+                    <div className="mono text-muted shrink-0" style={{ fontSize: 11 }}>{s.date}</div>
+                  </div>
+                  {/* Stats row */}
+                  <div className="flex justify-between" style={{ fontSize: 13 }}>
+                    <div>
+                      <div style={{ fontSize: 11, color: "var(--muted)", marginBottom: 1 }}>Qty</div>
+                      <div>{s.qty}</div>
+                    </div>
+                    <div>
+                      <div style={{ fontSize: 11, color: "var(--muted)", marginBottom: 1 }}>Sale Price</div>
+                      <div>{fmt(s.salePrice)}</div>
+                    </div>
+                    <div>
+                      <div style={{ fontSize: 11, color: "var(--muted)", marginBottom: 1 }}>Revenue</div>
+                      <div style={{ fontWeight: 600 }}>{fmt(revenue)}</div>
+                    </div>
+                    <div>
+                      <div style={{ fontSize: 11, color: "var(--muted)", marginBottom: 1 }}>Profit</div>
+                      <div className="text-accent" style={{ fontWeight: 600 }}>+{fmt(profit)}</div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </>
       )}
 
       {/* ── Record Sale ── */}
       {tab === "record" && (
-        <div className="card" style={{ maxWidth: 480 }}>
+        <div className="card w-full sm:max-w-md" style={{ maxWidth: "min(100%, 480px)" }}>
           <div className="card-title">Record a Sale</div>
           <div className="form-grid" style={{ gridTemplateColumns: "1fr" }}>
             <div className="form-group">
@@ -169,9 +211,9 @@ export default function Sales() {
 
           {error && <p style={{ color: "var(--danger)", fontSize: 12, marginTop: 12 }}>{error}</p>}
 
-          <div className="btn-row">
-            <button className="btn btn-primary" onClick={onSubmit}>Record Sale</button>
-            <button className="btn btn-outline" onClick={() => { setForm(EMPTY); setError(""); }}>Clear</button>
+          <div className="btn-row flex-wrap gap-2">
+            <button className="btn btn-primary flex-1" onClick={onSubmit}>Record Sale</button>
+            <button className="btn btn-outline flex-1" onClick={() => { setForm(EMPTY); setError(""); }}>Clear</button>
           </div>
         </div>
       )}

@@ -27,7 +27,7 @@ export default function Dashboard({ onNavigate }) {
   const maxExpense = Math.max(...expenseByCategory.map(c => c.amount), 1);
 
   return (
-    <div>
+    <div className="px-3 sm:px-0">
       <div className="page-header">
         <h1>Dashboard</h1>
         <p>Overview of your bead &amp; crochet business</p>
@@ -37,7 +37,7 @@ export default function Dashboard({ onNavigate }) {
       <div className="stat-grid">
         <div className="stat-card">
           <div><div className="stat-label">Total Products</div><div className="stat-value">{totalProducts}</div></div>
-          < ShoppingCart className="text-green-800"/>
+          <ShoppingCart className="text-green-800" />
         </div>
         <div className="stat-card warn">
           <div><div className="stat-label">Low Stock</div><div className="stat-value">{lowStock}</div></div>
@@ -54,10 +54,11 @@ export default function Dashboard({ onNavigate }) {
       </div>
 
       {/* Financial overview */}
-      <div style={{ marginBottom: 28 }}>
-        <div style={{ fontSize: 15, fontWeight: 600, marginBottom: 14 }}>Financial Overview</div>
-        <div className="stat-grid" style={{ gridTemplateColumns: "repeat(3, 1fr)" }}>
-          <div className="stat-card green">
+      <div className="mb-7">
+        <div className="text-sm font-semibold mb-3">Financial Overview</div>
+        {/* 3-col on desktop, 1-col stacked on mobile */}
+        <div className="stat-grid" style={{ gridTemplateColumns: undefined }}>
+          <div className="stat-card green [grid-column:span_1]">
             <div>
               <div className="stat-label">Total Revenue</div>
               <div className="stat-value" style={{ fontSize: 18 }}>{fmt(totalRevenue)}</div>
@@ -71,7 +72,7 @@ export default function Dashboard({ onNavigate }) {
               <div className="stat-value" style={{ fontSize: 18 }}>{fmt(totalExpenses)}</div>
               <div style={{ fontSize: 11, color: "var(--muted)", marginTop: 4 }}>All categories</div>
             </div>
-           <TrendingDown className="text-red-900" />
+            <TrendingDown className="text-red-900" />
           </div>
           <div className={`stat-card ${netProfit >= 0 ? "green" : "danger"}`}>
             <div>
@@ -86,12 +87,18 @@ export default function Dashboard({ onNavigate }) {
         </div>
       </div>
 
-      {/* Expense breakdown + stock alerts */}
-      <div className="two-col" style={{ marginBottom: 20 }}>
+      {/* Expense breakdown + stock alerts — stack on mobile, side-by-side on md+ */}
+      <div className="two-col mb-5">
         <div className="card">
-          <div className="card-title" style={{ justifyContent: "space-between" }}>
-            <span><TrendingDown size={16} className="text-red-800" /> Expenses by Category</span>
-            <button className="btn btn-outline" style={{ padding: "4px 12px", fontSize: 12 }} onClick={() => onNavigate("expenses")}>Manage →</button>
+          <div className="card-title flex-wrap gap-2" style={{ justifyContent: "space-between" }}>
+            <span className="flex items-center gap-1"><TrendingDown size={16} className="text-red-800" /> Expenses by Category</span>
+            <button
+              className="btn btn-outline"
+              style={{ padding: "4px 12px", fontSize: 12 }}
+              onClick={() => onNavigate("expenses")}
+            >
+              Manage →
+            </button>
           </div>
           {expenseByCategory.length === 0 ? (
             <div className="empty"><div className="empty-icon">📊</div>No expenses recorded yet</div>
@@ -127,71 +134,84 @@ export default function Dashboard({ onNavigate }) {
           )}
         </div>
 
-        <div className="card">
-          <div className="card-title"> < TriangleAlert size={16} className="text-red-800" />Stock Alerts</div>
+        <div className="card mb-5">
+          <div className="card-title"><TriangleAlert size={16} className="text-red-800" />Stock Alerts</div>
           {stockAlerts.length === 0 ? (
             <div className="empty"><div className="empty-icon">✓</div>All products well stocked</div>
           ) : stockAlerts.map(p => (
             <div className="alert-row" key={p.id}>
-              <div>
-                <div className="alert-name">{p.name}</div>
+              <div className="min-w-0">
+                <div className="alert-name truncate">{p.name}</div>
                 <div className="alert-meta">{p.category} · {p.sku}</div>
               </div>
               {p.stock === 0
-                ? <span className="badge badge-danger">0 left</span>
-                : <span className={`badge ${p.stock <= 10 ? "badge-warn" : "badge-default"}`}>{p.stock} left</span>
+                ? <span className="badge badge-danger shrink-0">0 left</span>
+                : <span className={`badge shrink-0 ${p.stock <= 10 ? "badge-warn" : "badge-default"}`}>{p.stock} left</span>
               }
             </div>
           ))}
-          <button className="btn btn-outline mt-4" style={{ width: "100%", justifyContent: "center" }} onClick={() => onNavigate("add-items")}>
+          <button
+            className="btn btn-outline mt-4 w-full justify-center"
+            onClick={() => onNavigate("add-items")}
+          >
             + Restock Items
           </button>
         </div>
       </div>
 
-      {/* Recent sales + recent expenses */}
-      <div className="two-col">
+      {/* Recent sales + recent expenses — stack on mobile, side-by-side on md+ */}
+      <div className="two-col  mt-5">
         <div className="card">
-          <div className="card-title"> < TrendingUp size={16} className="text-green-800" /> Recent Sales</div>
+          <div className="card-title"><TrendingUp size={16} className="text-green-800" /> Recent Sales</div>
           {recentSales.length === 0 ? (
             <div className="empty"><div className="empty-icon">📦</div>No sales recorded yet</div>
           ) : recentSales.map(s => (
             <div className="sale-row" key={s.id}>
-              <div>
-                <div className="sale-name">{s.productName}</div>
+              <div className="min-w-0">
+                <div className="sale-name truncate">{s.productName}</div>
                 <div className="sale-meta">{s.date} · Qty: {s.qty}</div>
               </div>
-              <div className="sale-amt">
+              <div className="sale-amt shrink-0">
                 <div className="sale-price">{fmt(s.revenue)}</div>
                 <div className="sale-profit">+{fmt(s.profit)} profit</div>
               </div>
             </div>
           ))}
-          <button className="btn btn-outline mt-4" style={{ width: "100%", justifyContent: "center" }} onClick={() => onNavigate("sales")}>View All Sales →</button>
+          <button
+            className="btn btn-outline mt-4 w-full justify-center"
+            onClick={() => onNavigate("sales")}
+          >
+            View All Sales →
+          </button>
         </div>
 
         <div className="card">
-          <div className="card-title"> < TrendingDown size={16} className="text-red-800" /> Recent Expenses</div>
+          <div className="card-title"><TrendingDown size={16} className="text-red-800" /> Recent Expenses</div>
           {recentExpenses.length === 0 ? (
             <div className="empty"><div className="empty-icon">💸</div>No expenses recorded yet</div>
           ) : recentExpenses.map(e => {
             const colors = CATEGORY_COLORS[e.category] || CATEGORY_COLORS["Other"];
             return (
               <div className="sale-row" key={e.id}>
-                <div>
-                  <div className="sale-name">{e.description}</div>
+                <div className="min-w-0">
+                  <div className="sale-name truncate">{e.description}</div>
                   <div className="sale-meta" style={{ display: "flex", alignItems: "center", gap: 6, marginTop: 2 }}>
                     <span style={{ background: colors.bg, color: colors.color, padding: "1px 7px", borderRadius: 10, fontSize: 10, fontWeight: 600 }}>{e.category}</span>
                     <span>{e.date}</span>
                   </div>
                 </div>
-                <div className="sale-amt">
+                <div className="sale-amt shrink-0">
                   <div className="sale-price" style={{ color: "var(--danger)" }}>-{fmt(e.amount)}</div>
                 </div>
               </div>
             );
           })}
-          <button className="btn btn-outline mt-4" style={{ width: "100%", justifyContent: "center" }} onClick={() => onNavigate("expenses")}>View All Expenses →</button>
+          <button
+            className="btn btn-outline mt-4 w-full justify-center"
+            onClick={() => onNavigate("expenses")}
+          >
+            View All Expenses →
+          </button>
         </div>
       </div>
     </div>
