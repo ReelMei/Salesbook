@@ -278,3 +278,101 @@ tbody tr:hover td { background: #fafaf8; }
 .mono        { font-family: 'DM Mono', monospace; font-size: 12px; }
 .mt-4 { margin-top: 16px; }
 .flex-between { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+
+
+/* ── Mobile Responsive ── */
+@media (max-width: 768px) {
+
+  /* Stack sidebar and content vertically */
+  .app-shell {
+    flex-direction: column;
+  }
+
+  /* Sidebar becomes a top bar */
+  .sidebar {
+    width: 100%;
+    min-width: unset;
+    height: auto;
+    position: relative;
+    padding: 16px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0;
+  }
+
+  /* Hide nav label and nav items, show only brand */
+  .sidebar-nav-label { display: none; }
+  .sidebar-nav {
+    flex-direction: row;
+    gap: 4px;
+  }
+
+  .nav-item {
+    padding: 8px 10px;
+    font-size: 12px;
+    flex-direction: column;
+    gap: 3px;
+    align-items: center;
+    text-align: center;
+  }
+
+  .nav-icon { width: auto; }
+
+  /* Main content padding reduced */
+  .main-content {
+    padding: 20px 16px;
+  }
+
+  /* Stat grid: 2 columns on mobile */
+  .stat-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .stat-value { font-size: 20px; }
+
+  /* Two col becomes one col */
+  .two-col {
+    grid-template-columns: 1fr;
+  }
+
+  /* Form grid becomes one col */
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+  .form-group.full { grid-column: 1; }
+
+  /* Page header */
+  .page-header h1 { font-size: 20px; }
+
+  /* flex-between stacks on small screens */
+  .flex-between {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  /* Buttons full width in flex-between */
+  .flex-between .btn { width: 100%; justify-content: center; }
+
+  /* Modal full width */
+  .modal {
+    width: 90vw;
+    padding: 20px 16px;
+  }
+}
+
+/* ── Extra small screens ── */
+@media (max-width: 480px) {
+  .stat-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .stat-card { padding: 14px 14px; }
+  .stat-value { font-size: 18px; }
+  .stat-icon { width: 32px; height: 32px; font-size: 15px; }
+
+  .nav-item span:not(.nav-icon) { display: none; } /* hide nav text, keep icon only */
+}
