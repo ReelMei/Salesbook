@@ -37,81 +37,70 @@ export default function App() {
 
   const navigate = (id) => { location.hash = id; setPage(id); };
 
-  return (
-    <div className="app-shell">
+return (
+  <div className="app-shell">
 
-      {/* ── Mobile top bar ── */}
-      <header className="mobile-topbar">
-        <div className="sidebar-brand" style={{ padding: 0 }}>
-          <span className="sidebar-avatar">SB</span>
-          <div>
-            <div className="sidebar-title">Salesbook</div>
-            <div className="sidebar-sub">Inventory Manager</div>
-          </div>
+    {/* Mobile top bar */}
+    <div className="mobile-topbar">
+      <button className="hamburger" onClick={() => setSidebarOpen(o => !o)}>
+        
+      </button>
+      <span className="mobile-topbar-title">Inventory Manager</span>
+      <span style={{ width: 32 }} />
+    </div>
+
+    {/* Backdrop */}
+    {sidebarOpen && (
+      <div className="sidebar-backdrop" onClick={() => setSidebarOpen(false)} />
+    )}
+
+    {/* Sidebar */}
+    <aside className={`sidebar ${sidebarOpen ? "sidebar--open" : ""}`}>
+      <div className="sidebar-brand">
+        <span className="sidebar-avatar">B</span>
+        <div>
+          <div className="sidebar-title">Bead &amp; Crochet</div>
+          <div className="sidebar-sub">Inventory Manager</div>
         </div>
-        <button
-          className="hamburger"
-          onClick={() => setSidebar(o => !o)}
-          aria-label="Toggle menu"
-        >
-          {sidebarOpen ? <X size={22} /> : <Menu size={22} />}
-        </button>
-      </header>
-
-      {/* ── Backdrop (mobile) ── */}
-      {sidebarOpen && (
-        <div className="sidebar-backdrop" onClick={() => setSidebar(false)} />
-      )}
-
-      {/* ── Sidebar ── */}
-      <aside className={`sidebar ${sidebarOpen ? "sidebar--open" : ""}`}>
-        <div className="sidebar-brand">
-          <span className="sidebar-avatar">SB</span>
-          <div>
-            <div className="sidebar-title"> Salesbook</div>
-            <div className="sidebar-sub">Inventory Manager</div>
-          </div>
-        </div>
-
-        <nav className="sidebar-nav">
-          {NAV.map(n => (
-            <button
-              key={n.id}
-              className={`nav-item ${page === n.id ? "active" : ""}`}
-              onClick={() => navigate(n.id)}
-            >
-              <span className="nav-icon">{n.icon}</span>
-              {n.label}
-            </button>
-          ))}
-        </nav>
-      </aside>
-
-      {/* ── Main content ── */}
-<main className="flex-1 flex justify-center p-8  overflow-x-hidden">
-  <div className="w-full  max-w-[1440px]">
-    {page === "home"      && <Dashboard  onNavigate={navigate} />}
-    {page === "add-items" && <AddItems   onNavigate={navigate} />}
-    {page === "brand"     && <Brand      onNavigate={navigate} />}
-    {page === "sales"     && <Sales      onNavigate={navigate} />}
-    {page === "expenses"  && <Expenses   onNavigate={navigate} />}
-  </div>
-</main>
-
-      {/* ── Mobile bottom nav ── */}
-      {/* <nav className="bottom-nav">
+      </div>
+      <nav className="sidebar-nav">
+        <div className="sidebar-nav-label">Navigation</div>
         {NAV.map(n => (
           <button
             key={n.id}
-            className={`bottom-nav-item ${page === n.id ? "active" : ""}`}
-            onClick={() => navigate(n.id)}
+            className={`nav-item ${page === n.id ? "active" : ""}`}
+            onClick={() => { navigate(n.id); setSidebarOpen(false); }}
           >
-            <span className="bottom-nav-icon">{n.icon}</span>
-            <span className="bottom-nav-label">{n.label}</span>
+            <span className="nav-icon">{n.icon}</span>
+            {n.label}
           </button>
         ))}
-      </nav> */}
+      </nav>
+    </aside>
 
-    </div>
-  );
+    {/* Main content */}
+    <main className="main-content">
+      {page === "home"      && <Dashboard  onNavigate={navigate} />}
+      {page === "add-items" && <AddItems   onNavigate={navigate} />}
+      {page === "brand"     && <Brand      onNavigate={navigate} />}
+      {page === "sales"     && <Sales      onNavigate={navigate} />}
+      {page === "expenses"  && <Expenses   onNavigate={navigate} />}
+    </main>
+
+    {/* Bottom nav (mobile only) */}
+    <nav className="bottom-nav">
+      {NAV.map(n => (
+        <button
+          key={n.id}
+          className={`bottom-nav-item ${page === n.id ? "active" : ""}`}
+          onClick={() => navigate(n.id)}
+        >
+          <span className="bottom-nav-icon">{n.icon}</span>
+          <span className="bottom-nav-label">{n.label}</span>
+        </button>
+      ))}
+    </nav>
+
+  </div>
+);
 }

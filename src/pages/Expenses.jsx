@@ -231,7 +231,7 @@ export default function Expenses() {
           <div className="form-grid">
             <div className="form-group full">
               <label>Description *</label>
-              <input name="description" value={form.description} onChange={onChange} placeholder="e.g. Bead restock from Swarovski" />
+              <input name="description" value={form.description} onChange={onChange} placeholder="e.g. Record an expenses" />
             </div>
             <div className="form-group">
               <label>Amount (₦) *</label>
