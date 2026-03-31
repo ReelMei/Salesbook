@@ -134,7 +134,7 @@ export default function Dashboard({ onNavigate }) {
           )}
         </div>
 
-        <div className="card mb-5">
+        <div className="card mb-10">
           <div className="card-title"><TriangleAlert size={16} className="text-red-800" />Stock Alerts</div>
           {stockAlerts.length === 0 ? (
             <div className="empty"><div className="empty-icon">✓</div>All products well stocked</div>
@@ -160,7 +160,7 @@ export default function Dashboard({ onNavigate }) {
       </div>
 
       {/* Recent sales + recent expenses — stack on mobile, side-by-side on md+ */}
-      <div className="two-col  mt-5">
+      <div className="two-col">
         <div className="card">
           <div className="card-title"><TrendingUp size={16} className="text-green-800" /> Recent Sales</div>
           {recentSales.length === 0 ? (
