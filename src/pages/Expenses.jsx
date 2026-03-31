@@ -89,7 +89,7 @@ export default function Expenses() {
       </div>
 
       {/* Tabs */}
-      <div style={{ background: "#eeede8", borderRadius: 10, padding: 4, display: "inline-flex", marginBottom: 22, gap: 4 }}>
+      <div style={{ background: "#eeede8", borderRadius: 10, padding: 4, display: "inline-flex", marginBottom: 22, gap: 4, marginTop: 15 }}>
         {["list", "add"].map(t => (
           <button key={t} className={`tab ${tab === t ? "active" : ""}`} onClick={() => setTab(t)}>
             {t === "list"

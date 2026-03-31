@@ -68,7 +68,7 @@ export default function App() {
         <div className="sidebar-brand">
           <span className="sidebar-avatar">B</span>
           <div>
-            <div className="sidebar-title">Berry's Salesbook</div>
+            <div className="sidebar-title"> Salesbook</div>
             <div className="sidebar-sub">Inventory Manager</div>
           </div>
         </div>
