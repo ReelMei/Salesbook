@@ -3,7 +3,7 @@ import { getProducts, getBrands, addProduct, updateProduct, deleteProduct } from
 
 const CATEGORIES = [
   "Beads", "Crochet", "Threads & Strings",
-  "Yarn", "Finished Crochet", "Finished Jewellery", "Other"
+  "Clothing & Shoe", "Finished Goods", "Finished Jewellery", "Raw Materials",  "Others" ,
 ];
 
 const EMPTY_FORM = {
@@ -33,8 +33,8 @@ export default function AddItems() {
   const onChange = e => setForm(f => ({ ...f, [e.target.name]: e.target.value }));
 
   const onSubmit = () => {
-    const { name, sku, category, costPrice, salePrice, stock } = form;
-    if (!name || !sku || !category || costPrice === "" || salePrice === "" || stock === "") {
+    const { name,  category, costPrice, salePrice, stock } = form;
+    if (!name || !category || costPrice === "" || salePrice === "" || stock === "") {
       setError("Please fill in all required fields."); return;
     }
     const payload = {
@@ -182,10 +182,10 @@ export default function AddItems() {
             <div className="form-grid">
               <div className="form-group full">
                 <label>Product Name *</label>
-                <input name="name" value={form.name} onChange={onChange} placeholder="e.g. Swarovski Crystal Beads 6mm" />
+                <input name="name" value={form.name} onChange={onChange} placeholder="e.g. Input your product name" />
               </div>
               <div className="form-group">
-                <label>SKU *</label>
+                <label>SKU</label>
                 <input name="sku" value={form.sku} onChange={onChange} placeholder="e.g. SCB-006" />
               </div>
               <div className="form-group">
