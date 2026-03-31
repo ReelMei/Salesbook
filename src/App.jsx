@@ -57,9 +57,9 @@ return (
     {/* Sidebar */}
     <aside className={`sidebar ${sidebarOpen ? "sidebar--open" : ""}`}>
       <div className="sidebar-brand">
-        <span className="sidebar-avatar">B</span>
+        <span className="sidebar-avatar">SB</span>
         <div>
-          <div className="sidebar-title">Bead &amp; Crochet</div>
+          <div className="sidebar-title">Salesbook</div>
           <div className="sidebar-sub">Inventory Manager</div>
         </div>
       </div>
