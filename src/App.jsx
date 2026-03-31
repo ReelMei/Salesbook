@@ -43,9 +43,9 @@ export default function App() {
       {/* ── Mobile top bar ── */}
       <header className="mobile-topbar">
         <div className="sidebar-brand" style={{ padding: 0 }}>
-          <span className="sidebar-avatar">B</span>
+          <span className="sidebar-avatar">SB</span>
           <div>
-            <div className="sidebar-title">Berry's Salesbook</div>
+            <div className="sidebar-title">Salesbook</div>
             <div className="sidebar-sub">Inventory Manager</div>
           </div>
         </div>
@@ -66,7 +66,7 @@ export default function App() {
       {/* ── Sidebar ── */}
       <aside className={`sidebar ${sidebarOpen ? "sidebar--open" : ""}`}>
         <div className="sidebar-brand">
-          <span className="sidebar-avatar">B</span>
+          <span className="sidebar-avatar">SB</span>
           <div>
             <div className="sidebar-title"> Salesbook</div>
             <div className="sidebar-sub">Inventory Manager</div>

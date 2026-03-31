@@ -54,12 +54,12 @@ export default function Dashboard({ onNavigate }) {
       </div>
 
       {/* Financial overview */}
-      <div className="mb-7">
-        <div className="text-sm font-semibold mb-3">Financial Overview</div>
+      <div className="mt-7">
+        <div className="text-sm font-semibold mb-8">Financial Overview</div>
         {/* 3-col on desktop, 1-col stacked on mobile */}
         <div className="stat-grid" style={{ gridTemplateColumns: undefined }}>
-          <div className="stat-card green [grid-column:span_1]">
-            <div>
+          <div className="stat-card green `col-[span-1]`">
+            <div className="">
               <div className="stat-label">Total Revenue</div>
               <div className="stat-value" style={{ fontSize: 18 }}>{fmt(totalRevenue)}</div>
               <div style={{ fontSize: 11, color: "var(--muted)", marginTop: 4 }}>From all sales</div>

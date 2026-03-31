@@ -90,11 +90,11 @@ export default function Brand() {
             <div className="form-grid">
               <div className="form-group full">
                 <label>Brand Name *</label>
-                <input name="name" value={form.name} onChange={onChange} placeholder="e.g. Swarovski" />
+                <input name="name" value={form.name} onChange={onChange} placeholder="e.g. Add your brand name" />
               </div>
               <div className="form-group full">
                 <label>Notes</label>
-                <textarea name="notes" value={form.notes} onChange={onChange} placeholder="Any notes about this supplier…" />
+                <textarea name="notes" value={form.notes} onChange={onChange} placeholder="Add Any notes about this brand" />
               </div>
             </div>
             {error && <p style={{ color: "var(--danger)", fontSize: 12, marginTop: 12 }}>{error}</p>}
